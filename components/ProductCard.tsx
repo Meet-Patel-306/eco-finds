@@ -72,7 +72,7 @@ const ProductCard = ({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <p>{description}...</p>
+            <p>{description.substring(0, 20)}...</p>
           </CardContent>
         </Link>
         <CardFooter className="justify-between gap-3 max-sm:flex-col max-sm:items-stretch">

@@ -3,6 +3,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import CartCard from "@/components/CartCard";
+import { toast } from "sonner";
 
 type CartItem = {
   cartId: string;
@@ -51,6 +52,25 @@ export default function CartPage() {
     fetchCart();
   }, []);
 
+  const handleBuyNow = () => {
+    toast.promise(
+      fetch("/api/buy", {
+        method: "POST",
+      }).then(async (res) => {
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.message || "Purchase failed");
+        }
+        return res.json();
+      }),
+      {
+        loading: "Processing your purchase...",
+        success: (data) => data.message || "Purchase successful!",
+        error: (err) => err.message || "Something went wrong",
+      }
+    );
+  };
+
   // 🔹 Calculate total cart value
   const totalValue = useMemo(() => {
     return (cart ?? []).reduce(
@@ -58,11 +78,6 @@ export default function CartPage() {
       0
     );
   }, [cart]);
-
-  const handleBuyNow = () => {
-    alert(`Proceeding to payment. Total: ₹${totalValue}`);
-    // 🔗 Redirect to checkout / payment integration
-  };
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-8">
