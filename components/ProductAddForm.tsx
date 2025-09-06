@@ -24,9 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { categoryEnum } from "@/db/schema";
 import Upload from "./Upload";
-import { createProduct } from "@/server-actions/products";
 
 const formSchema = z.object({
   title: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -85,7 +83,7 @@ export function ProductAddForm() {
   }
 
   return (
-    <div className="bg-neutral-900 flex items-center justify-center text-neutral-100">
+    <div className="flex items-center justify-center text-neutral-100 mt-32">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
