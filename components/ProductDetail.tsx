@@ -1,5 +1,7 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "./ui/badge";
+import { toast } from "sonner";
 
 interface ProductDetailsProps {
   id: string;
@@ -25,6 +27,27 @@ export default function ProductDetail({
   category,
   imageUrl,
 }: ProductDetailsProps) {
+  const handleAddToCart = async () => {
+    await toast.promise(
+      fetch("/api/cart/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, quantity: 1 }),
+      }).then(async (res) => {
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.error || "Failed to add to cart");
+        }
+        return res.json();
+      }),
+      {
+        loading: "Adding product to cart...",
+        success: (data) => data.message || "Product added to cart!",
+        error: (err) => err.message || "Something went wrong",
+      }
+    );
+  };
+
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <main className="flex-1">
@@ -50,7 +73,9 @@ export default function ProductDetail({
               <div className="text-2xl font-bold">{price} INR</div>
             </div>
             <form className="grid gap-4">
-              <Button size="lg">Add to cart</Button>
+              <Button size="lg" onClick={handleAddToCart}>
+                Add to cart
+              </Button>
             </form>
           </div>
         </section>

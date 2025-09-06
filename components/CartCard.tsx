@@ -29,7 +29,7 @@ interface ProductCardProps {
   imageUrl: string;
 }
 
-const ProductCard = ({
+const CartCard = ({
   id,
   title,
   description,
@@ -37,27 +37,6 @@ const ProductCard = ({
   category,
   imageUrl,
 }: ProductCardProps) => {
-  const handleAddToCart = () => {
-    toast.promise(
-      fetch("/api/cart/add", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productId: id, quantity: 1 }),
-      }).then(async (res) => {
-        if (!res.ok) {
-          const err = await res.json().catch(() => ({}));
-          throw new Error(err.error || "Failed to add to cart");
-        }
-        return res.json();
-      }),
-      {
-        loading: "Adding product to cart...",
-        success: (data) => data.message || "Product added to cart!",
-        error: (err) => err.message || "Something went wrong",
-      }
-    );
-  };
-
   return (
     <div className="relative max-w-md rounded-xl bg-gradient-to-r from-zinc-600 to-violet-300 pt-0 shadow-lg">
       <div className="flex h-60 items-center justify-center">
@@ -72,7 +51,7 @@ const ProductCard = ({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <p>{description}...</p>
+            <p>{description.substring(0, 20) ?? "No description"}...</p>
           </CardContent>
         </Link>
         <CardFooter className="justify-between gap-3 max-sm:flex-col max-sm:items-stretch">
@@ -82,13 +61,10 @@ const ProductCard = ({
               <span className="text-xl font-semibold">{price} INR</span>
             </div>
           </Link>
-          <Button size="lg" onClick={handleAddToCart}>
-            Add to cart
-          </Button>
         </CardFooter>
       </Card>
     </div>
   );
 };
 
-export default ProductCard;
+export default CartCard;
