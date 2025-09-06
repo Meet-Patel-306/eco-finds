@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
+import { Navbar } from "@/components/Navbar/Navbar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,6 +19,7 @@ export default function RootLayout({
       <html lang="en">
         <body className={`antialiased`}>
           <Toaster position="top-center" duration={3000} />
+          <Navbar />
           {children}
         </body>
       </html>
