@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,6 +10,7 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { Badge } from "./ui/badge";
+import Link from "next/link";
 
 interface ProductCardProps {
   id: string;
@@ -42,20 +42,24 @@ const ProductCard = ({
         <img src={imageUrl} alt="img" className="w-75" />
       </div>
       <Card className="border-none">
-        <CardHeader>
-          <CardTitle>{title}</CardTitle>
-          <CardDescription>
-            <Badge>{category}</Badge>
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p>{description}</p>
-        </CardContent>
+        <Link href={`/product/${id}`}>
+          <CardHeader>
+            <CardTitle>{title}</CardTitle>
+            <CardDescription>
+              <Badge>{category}</Badge>
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p>{description.substring(0, 20)}...</p>
+          </CardContent>
+        </Link>
         <CardFooter className="justify-between gap-3 max-sm:flex-col max-sm:items-stretch">
-          <div className="flex flex-col">
-            <span className="text-sm font-medium uppercase">Price</span>
-            <span className="text-xl font-semibold">{price} INR</span>
-          </div>
+          <Link href={`/product/${id}`}>
+            <div className="flex flex-col">
+              <span className="text-sm font-medium uppercase">Price</span>
+              <span className="text-xl font-semibold">{price} INR</span>
+            </div>
+          </Link>
           <Button size="lg">Add to cart</Button>
         </CardFooter>
       </Card>
