@@ -1,10 +1,10 @@
 import Image from "next/image";
-import Upload from "@/components/Upload";
+import { ProductAddForm } from "@/components/ProductAddForm";
 
 export default function Home() {
   return (
     <>
-      <Upload />
+      <ProductAddForm />
     </>
   );
 }

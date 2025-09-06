@@ -3,10 +3,17 @@
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 
-export default function DragDropUpload() {
+interface DragDropUploadProps {
+  value?: string;
+  onChange: (url: string) => void;
+}
+
+export default function DragDropUpload({
+  value,
+  onChange,
+}: DragDropUploadProps) {
   const [preview, setPreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
-  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
 
   const onDrop = async (acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
@@ -14,7 +21,6 @@ export default function DragDropUpload() {
 
     // local preview while uploading
     setPreview(URL.createObjectURL(file));
-    setUploadedUrl(null);
 
     // convert to base64 for upload
     const reader = new FileReader();
@@ -37,7 +43,7 @@ export default function DragDropUpload() {
         setUploading(false);
 
         if (res.ok) {
-          setUploadedUrl(data.url); // show uploaded image instead of preview
+          onChange(data.url);
           setPreview(null);
         } else {
           alert(data.error || "Upload failed");
@@ -58,7 +64,7 @@ export default function DragDropUpload() {
   return (
     <div
       {...getRootProps()}
-      className={`w-80 h-60 flex items-center justify-center border-2 border-dashed rounded-lg cursor-pointer overflow-hidden relative ${
+      className={`w-56 md:w-80 lg:w-96 h-60 flex items-center justify-center border-2 border-dashed rounded-lg cursor-pointer overflow-hidden relative ${
         isDragActive ? "border-blue-500 bg-blue-50" : "border-gray-400"
       }`}
     >
@@ -66,9 +72,9 @@ export default function DragDropUpload() {
 
       {uploading ? (
         <p className="text-blue-600 font-medium animate-pulse">Uploading...</p>
-      ) : uploadedUrl ? (
+      ) : value ? (
         <img
-          src={uploadedUrl}
+          src={value}
           alt="uploaded"
           className="object-cover w-full h-full"
         />

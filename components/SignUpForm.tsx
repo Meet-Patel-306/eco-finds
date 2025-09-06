@@ -18,25 +18,25 @@ import { Input } from "./ui/input";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { Loader, AlertCircle, Eye, EyeOff } from "lucide-react";
 
-export default function SingUpForm() {
-  const signUpSchema = z
-    .object({
-      email: z
-        .email({ message: "Please enter a valid email address." })
-        .min(1, { message: "Email Id is required." }),
-      password: z
-        .string()
-        .min(1, { message: "Password is required." })
-        .min(8, { message: "Password must be at least 8 characters" }),
-      passwordConfirmation: z
-        .string()
-        .min(1, { message: "Please confirm your password" }),
-    })
-    .refine((data) => data.password === data.passwordConfirmation, {
-      message: "Passwords do not match",
-      path: ["passwordConfirmation"],
-    });
+const signUpSchema = z
+  .object({
+    email: z
+      .email({ message: "Please enter a valid email address." })
+      .min(1, { message: "Email Id is required." }),
+    password: z
+      .string()
+      .min(1, { message: "Password is required." })
+      .min(8, { message: "Password must be at least 8 characters" }),
+    passwordConfirmation: z
+      .string()
+      .min(1, { message: "Please confirm your password" }),
+  })
+  .refine((data) => data.password === data.passwordConfirmation, {
+    message: "Passwords do not match",
+    path: ["passwordConfirmation"],
+  });
 
+export default function SingUpForm() {
   const otpSchema = z.object({
     pin: z.string().min(6, {
       message: "Your one-time password must be 6 characters.",
