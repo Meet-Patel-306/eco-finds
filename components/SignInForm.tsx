@@ -19,15 +19,13 @@ import { useState } from "react";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
 
+const signInSchema = z.object({
+  // email
+  identifier: z.email({ message: "Please enter a valid email address." }),
+  password: z.string().min(1, { message: "Password is required." }),
+});
+
 export default function SignInForm() {
-  const signInSchema = z.object({
-    // email
-    identifier: z
-      .string()
-      .min(1, { message: "Email or username is required." })
-      .email({ message: "Please enter a valid email address." }),
-    password: z.string().min(1, { message: "Password is required." }),
-  });
   const signInForm = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
