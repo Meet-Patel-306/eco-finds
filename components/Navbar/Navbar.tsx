@@ -9,10 +9,16 @@ import { NavMenu } from "./NavMenu";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { UserButton } from "../user-button";
+import { useUser } from "@clerk/nextjs";
 
 export function Navbar() {
+  const { isSignedIn, user } = useUser();
+
+  if (!isSignedIn) {
+    return null;
+  }
   return (
-    <nav className="block top-6 inset-x-4 z-50 h-16 bg-neutral-900 text-white backdrop-blur-sm border border-neutral-300 max-w-screen-xl mx-auto rounded-full shadow-lg">
+    <nav className="block top-6 inset-x-4 z-50 mt-5 h-16 bg-neutral-900 text-white backdrop-blur-sm border border-neutral-300 max-w-screen-xl mx-auto rounded-full shadow-lg">
       <div className="h-full flex items-center justify-between px-4">
         {/* Logo */}
         <Link href="/" className="flex items-center">

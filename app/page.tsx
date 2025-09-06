@@ -1,18 +1,15 @@
 import { ProductAddForm } from "@/components/ProductAddForm";
 import ProductCard from "@/components/ProductCard";
+import { redirect } from "next/navigation";
+import { auth } from "@clerk/nextjs/server";
 
-export default function Home() {
-  return (
-    <>
-      <ProductAddForm />
-      <ProductCard
-        id="1230"
-        title="hello"
-        description="leromandkjdas"
-        category="toys"
-        price={1000}
-        imageUrl="https://ik.imagekit.io/mtptuser/Screenshot_2024-09-15_232455_O9e6hVhkF.png"
-      />
-    </>
-  );
+export default async function Home() {
+  const { userId } = await auth();
+  if (!userId) {
+    redirect("/sign-in");
+  }
+  if (userId) {
+    redirect("/product");
+  }
+  return <></>;
 }
